@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "Character" (
-    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "id" INT8 NOT NULL DEFAULT unique_rowid(),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "name" STRING NOT NULL,

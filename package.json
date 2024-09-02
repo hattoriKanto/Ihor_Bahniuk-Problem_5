@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon src/app.ts",
     "init": "npx prisma init",
-    "migrate": "prisma migrate dev --name"
+    "migrate": "prisma migrate dev --name",
+    "generate": "prisma generate"
   },
   "repository": {
     "type": "git",
