@@ -1,0 +1,41 @@
+{
+  "name": "ihor-bahniuk-be-code-challenge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/app.ts",
+  "scripts": {
+    "dev": "nodemon src/app.ts",
+    "init": "npx prisma init",
+    "migrate": "prisma migrate dev --name"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hattoriKanto/Ihor-Bahniuk.git"
+  },
+  "author": "hattoriKanto",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hattoriKanto/Ihor-Bahniuk/issues"
+  },
+  "homepage": "https://github.com/hattoriKanto/Ihor-Bahniuk#readme",
+  "dependencies": {
+    "@prisma/client": "^5.19.1",
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.1",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.5.2",
+    "dotenv": "^16.4.5",
+    "eslint": "^9.9.1",
+    "globals": "^15.9.0",
+    "nodemon": "^3.1.4",
+    "prisma": "^5.19.1",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.4.0"
+  }
+}
