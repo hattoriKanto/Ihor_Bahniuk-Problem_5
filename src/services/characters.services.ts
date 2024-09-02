@@ -1,4 +1,4 @@
-import { prisma } from "../app";
+import { prisma } from "../../api";
 
 export const getAllCharacters = async () => {
   const result = await prisma.character.findMany();
