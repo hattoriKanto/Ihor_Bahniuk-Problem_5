@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import * as services from "../services/characters.services";
+import { prisma } from "../../api";
 
 export const getAllCharacters = async (
   request: Request,
@@ -18,6 +19,8 @@ export const getAllCharacters = async (
     response
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send({ error: { message: "Internal Server Error" } });
+  } finally {
+    prisma.$disconnect();
   }
 };
 
@@ -51,5 +54,7 @@ export const getCharacterByID = async (
     response
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send({ error: { message: "Internal Server Error" } });
+  } finally {
+    prisma.$disconnect();
   }
 };
