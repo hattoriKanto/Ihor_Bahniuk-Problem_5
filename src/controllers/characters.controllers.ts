@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import * as services from "../services/characters.services";
-import { prisma } from "../../api";
+import { prisma } from "../app";
 
 export const getAllCharacters = async (
   request: Request,
