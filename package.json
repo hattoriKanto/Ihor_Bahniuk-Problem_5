@@ -4,6 +4,7 @@
   "description": "",
   "main": "api/index.ts",
   "scripts": {
+    "prisma-vercel": "npm run generate && npm run vercel-build",
     "dev": "nodemon api/index.ts",
     "init": "npx prisma init",
     "migrate": "prisma migrate dev --name",
