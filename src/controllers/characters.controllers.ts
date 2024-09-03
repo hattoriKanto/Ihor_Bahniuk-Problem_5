@@ -91,37 +91,6 @@ export const addCharacter = async (request: Request, response: Response) => {
   }
 };
 
-export const addCharacter = async (request: Request, response: Response) => {
-  try {
-    const data = request.body as CharacterData;
-
-    const result = await services.addCharacter(data);
-
-    response
-      .status(StatusCodes.CREATED)
-      .header("Location", `/characters/${result.id}`)
-      .send(result);
-  } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      return response.status(StatusCodes.BAD_REQUEST).send({
-        error: {
-          message: "Data validation failed. Please check your data.",
-        },
-      });
-    }
-
-    console.error(
-      "An error has occurred while trying to create character: ",
-      error
-    );
-    response
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send({ error: { message: "Internal Server Error" } });
-  } finally {
-    prisma.$disconnect();
-  }
-};
-
 export const removeCharacterByID = async (
   request: Request,
   response: Response
