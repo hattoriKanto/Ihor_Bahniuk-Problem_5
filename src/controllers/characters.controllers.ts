@@ -40,8 +40,6 @@ export const getAllCharacters = async (
     response
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send({ error: { message: "Internal Server Error", error } });
-  } finally {
-    prisma.$disconnect();
   }
 };
 
@@ -74,8 +72,6 @@ export const getCharacterByID = async (
     response
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send({ error: { message: "Internal Server Error", error } });
-  } finally {
-    prisma.$disconnect();
   }
 };
 
@@ -105,8 +101,6 @@ export const addCharacter = async (request: Request, response: Response) => {
     response
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send({ error: { message: "Internal Server Error", error } });
-  } finally {
-    prisma.$disconnect();
   }
 };
 
@@ -134,8 +128,6 @@ export const removeCharacterByID = async (
     response
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send({ error: { message: "Internal Server Error", error } });
-  } finally {
-    prisma.$disconnect();
   }
 };
 
