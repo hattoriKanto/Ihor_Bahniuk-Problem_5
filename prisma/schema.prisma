@@ -15,7 +15,7 @@ generator client {
 
 
 model Character {
-  id          BigInt    @id @unique @default(autoincrement())
+  id          Int    @id @unique @default(sequence())
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   name        String
