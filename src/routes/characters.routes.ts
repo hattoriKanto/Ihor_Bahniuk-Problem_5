@@ -7,5 +7,5 @@ router.get("/");
 router.get("/characters", controllers.getAllCharacters);
 router.get("/characters/:id", controllers.getCharacterByID);
 router.post("/characters");
-router.delete("/characters/:id");
+router.delete("/characters/:id", controllers.removeCharacterByID);
 router.put("/characters/:id");

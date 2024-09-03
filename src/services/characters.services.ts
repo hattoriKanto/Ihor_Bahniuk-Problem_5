@@ -15,3 +15,11 @@ export const getCharacterByID = async (id: number) => {
 
   return result;
 };
+
+export const removeCharacterByID = async (id: number) => {
+  await prisma.character.delete({
+    where: {
+      id,
+    },
+  });
+};

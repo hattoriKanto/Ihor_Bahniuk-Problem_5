@@ -28,16 +28,15 @@ export const getCharacterByID = async (
   request: Request,
   response: Response
 ) => {
-  const { id } = request.params;
-  const normalizedID = Number(id);
-
-  if (isNaN(normalizedID)) {
-    return response
-      .status(StatusCodes.NOT_FOUND)
-      .send({ error: { message: "Character with this id was not found" } });
-  }
-
   try {
+    const { id } = request.params;
+    const normalizedID = Number(id);
+    if (isNaN(normalizedID)) {
+      return response
+        .status(StatusCodes.NOT_FOUND)
+        .send({ error: { message: "Character with this id was not found" } });
+    }
+
     const result = await services.getCharacterByID(normalizedID);
     if (!result) {
       return response
@@ -49,6 +48,35 @@ export const getCharacterByID = async (
   } catch (error) {
     console.error(
       "An error has occurred while trying to find character by id: ",
+      error
+    );
+    response
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send({ error: { message: "Internal Server Error" } });
+  } finally {
+    prisma.$disconnect();
+  }
+};
+
+export const removeCharacterByID = async (
+  request: Request,
+  response: Response
+) => {
+  try {
+    const { id } = request.params;
+    const normalizedID = Number(id);
+    if (isNaN(normalizedID)) {
+      return response
+        .status(StatusCodes.NOT_FOUND)
+        .send({ error: { message: "Character with this id was not found" } });
+    }
+
+    await services.removeCharacterByID(normalizedID);
+
+    response.status(StatusCodes.NO_CONTENT);
+  } catch (error) {
+    console.error(
+      "An error has occurred while trying to delete character by id: ",
       error
     );
     response
