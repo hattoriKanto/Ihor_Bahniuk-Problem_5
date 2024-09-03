@@ -1,3 +1,4 @@
+import { CharacterData } from "../utils/types";
 import { prisma } from "../app";
 
 export const getAllCharacters = async () => {
@@ -11,6 +12,14 @@ export const getCharacterByID = async (id: number) => {
     where: {
       id,
     },
+  });
+
+  return result;
+};
+
+export const addCharacter = async (characterData: CharacterData) => {
+  const result = await prisma.character.create({
+    data: characterData,
   });
 
   return result;

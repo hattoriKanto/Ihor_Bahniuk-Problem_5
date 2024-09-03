@@ -6,6 +6,6 @@ export const router = express.Router();
 router.get("/");
 router.get("/characters", controllers.getAllCharacters);
 router.get("/characters/:id", controllers.getCharacterByID);
-router.post("/characters");
+router.post("/characters", controllers.addCharacter);
 router.delete("/characters/:id", controllers.removeCharacterByID);
 router.put("/characters/:id");
