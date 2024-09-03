@@ -1,4 +1,7 @@
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import {
+  PrismaClientKnownRequestError,
+  PrismaClientValidationError,
+} from "@prisma/client/runtime/library";
 import { CharacterData, FiltersData } from "../utils/types";
 import { prisma } from "../app";
 import { ERROR } from "../utils/errors";
@@ -30,6 +33,7 @@ export const getCharacterByID = async (id: number) => {
       error instanceof PrismaClientKnownRequestError &&
       error.code === "P2025"
     ) {
+      console.error(`${ERROR.NOT_FOUND}: `, error);
       throw new Error(ERROR.NOT_FOUND);
     }
 
@@ -46,6 +50,11 @@ export const addCharacter = async (characterData: CharacterData) => {
 
     return result;
   } catch (error) {
+    if (error instanceof PrismaClientValidationError) {
+      console.error(`${ERROR.INVALID_DATA}: `, error);
+      throw new Error(ERROR.INVALID_DATA);
+    }
+
     console.error(`${ERROR.ADD}: `, error);
     throw new Error(ERROR.ADD);
   }
@@ -53,18 +62,17 @@ export const addCharacter = async (characterData: CharacterData) => {
 
 export const removeCharacterByID = async (id: number) => {
   try {
-    const result = await prisma.character.delete({
+    await prisma.character.delete({
       where: {
         id,
       },
     });
-
-    return result;
   } catch (error) {
     if (
       error instanceof PrismaClientKnownRequestError &&
       error.code === "P2025"
     ) {
+      console.error(`${ERROR.NOT_FOUND}: `, error);
       throw new Error(ERROR.NOT_FOUND);
     }
 
@@ -78,7 +86,7 @@ export const updateCharacterByID = async (
   data: Partial<CharacterData>
 ) => {
   try {
-    await prisma.character.update({
+    const result = await prisma.character.update({
       where: {
         id,
       },
@@ -86,11 +94,14 @@ export const updateCharacterByID = async (
         ...data,
       },
     });
+
+    return result;
   } catch (error) {
     if (
       error instanceof PrismaClientKnownRequestError &&
       error.code === "P2025"
     ) {
+      console.error(`${ERROR.NOT_FOUND}: `, error);
       throw new Error(ERROR.NOT_FOUND);
     }
 
