@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import * as services from "../services/characters.services";
 import { prisma } from "../app";
-import { CharacterData } from "../utils/types";
+import { CharacterData, FiltersData } from "../utils/types";
 
 export const getAllCharacters = async (
   request: Request,
@@ -11,7 +11,25 @@ export const getAllCharacters = async (
 ) => {
   try {
     const query = request.query;
-    const result = await services.getAllCharacters(query);
+    const filters: FiltersData = {};
+
+    if (Object.keys(query).length > 0) {
+      Object.entries(query).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          filters[key] = {
+            in: value as string[],
+            mode: "insensitive",
+          };
+        } else {
+          filters[key] = {
+            equals: value as string,
+            mode: "insensitive",
+          };
+        }
+      });
+    }
+
+    const result = await services.getAllCharacters(filters);
 
     response.status(StatusCodes.OK).send(result);
   } catch (error) {

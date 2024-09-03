@@ -1,8 +1,7 @@
-import { CharacterData } from "../utils/types";
+import { CharacterData, FiltersData } from "../utils/types";
 import { prisma } from "../app";
-import QueryString from "qs";
 
-export const getAllCharacters = async (filters: QueryString.ParsedQs) => {
+export const getAllCharacters = async (filters: FiltersData) => {
   const result = await prisma.character.findMany({
     where: filters,
   });
