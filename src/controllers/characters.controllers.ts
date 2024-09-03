@@ -10,7 +10,8 @@ export const getAllCharacters = async (
   response: Response
 ) => {
   try {
-    const result = await services.getAllCharacters();
+    const query = request.query;
+    const result = await services.getAllCharacters(query);
 
     response.status(StatusCodes.OK).send(result);
   } catch (error) {
@@ -71,7 +72,7 @@ export const addCharacter = async (request: Request, response: Response) => {
       .header("Location", `/characters/${result.id}`)
       .send(result);
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    if (error instanceof Prisma.PrismaClientValidationError) {
       return response.status(StatusCodes.BAD_REQUEST).send({
         error: {
           message: "Data validation failed. Please check your data.",
