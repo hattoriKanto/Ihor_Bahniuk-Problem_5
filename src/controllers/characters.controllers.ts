@@ -138,3 +138,31 @@ export const removeCharacterByID = async (
     prisma.$disconnect();
   }
 };
+
+export const updateCharacterByID = async (
+  request: Request,
+  response: Response
+) => {
+  try {
+    const { id } = request.params;
+    const data = request.body as Partial<CharacterData>;
+    const normalizedID = Number(id);
+    if (isNaN(normalizedID)) {
+      return response
+        .status(StatusCodes.NOT_FOUND)
+        .send({ error: { message: "Character with this id was not found" } });
+    }
+
+    const result = await services.updateCharacterByID(normalizedID, data);
+
+    response.status(StatusCodes.OK).send(result);
+  } catch (error) {
+    console.error(
+      "An error has occurred while trying to update character by id: ",
+      error
+    );
+    response
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send({ error: { message: "Internal Server Error", error } });
+  }
+};

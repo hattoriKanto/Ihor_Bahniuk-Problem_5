@@ -34,3 +34,16 @@ export const removeCharacterByID = async (id: number) => {
     },
   });
 };
+
+export const updateCharacterByID = async (id: number, data: Partial<CharacterData>) => {
+  const result = await prisma.character.update({
+    where: {
+      id,
+    },
+    data: {
+      ...data
+    },
+  });
+
+  return result;
+};
