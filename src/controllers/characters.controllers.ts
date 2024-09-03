@@ -106,7 +106,7 @@ export const removeCharacterByID = async (
 
     await services.removeCharacterByID(normalizedID);
 
-    response.status(StatusCodes.NO_CONTENT);
+    response.status(StatusCodes.NO_CONTENT).send();
   } catch (error) {
     console.error(
       "An error has occurred while trying to delete character by id: ",
