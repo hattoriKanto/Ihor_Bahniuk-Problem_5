@@ -50,6 +50,11 @@ cd express-anime_characters
 npm install
 ```
 
+- Create .env file. Create env variable with name ```DATABASE_URL``` in this file:
+```
+DATABASE_URL = "postgresql://USER:PASSWORD@HOST:PORT/DATABASE?KEY1=VALUE&KEY2=VALUE&KEY3=VALUE"
+```
+
 - Run the development server:
 ```bash
 npm run dev
