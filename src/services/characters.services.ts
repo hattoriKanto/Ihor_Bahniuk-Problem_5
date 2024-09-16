@@ -20,7 +20,7 @@ export const getAPIDocs = async () => {
   } catch (error) {
     console.error(`An error has occurred: `);
     console.log(error);
-    throw new Error(ERROR.FETCH_MANY);
+    throw new Error(ERROR.API_DOCS);
   }
 };
 
