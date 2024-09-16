@@ -317,7 +317,6 @@ Properties `id`, `createdAt` and `updatedAt` are managed by PrismaORM itself.
               "role": "Supporting Character",
               "voiceActor": "Stephanie Sheh"
             }
-          ```
       ````
 
   - Failure:
