@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import * as services from "../services/characters.services";
-import { CharacterData, FiltersData } from "../utils/types";
-import { ERROR } from "../utils/errors";
+import { createFilters, ERROR, CharacterData } from "../utils";
 
 export const getAllCharacters = async (
   request: Request,
@@ -10,23 +9,7 @@ export const getAllCharacters = async (
 ) => {
   try {
     const query = request.query;
-    const filters: FiltersData = {};
-
-    if (Object.keys(query).length > 0) {
-      Object.entries(query).forEach(([key, value]) => {
-        if (Array.isArray(value)) {
-          filters[key] = {
-            in: value as string[],
-            mode: "insensitive",
-          };
-        } else {
-          filters[key] = {
-            equals: value as string,
-            mode: "insensitive",
-          };
-        }
-      });
-    }
+    const filters = createFilters(query);
 
     const result = await services.getAllCharacters(filters);
 
@@ -38,7 +21,7 @@ export const getAllCharacters = async (
     );
     response
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send({ error: { message: "Internal Server Error", error } });
+      .send({ error: { message: "Internal Server Error" } });
   }
 };
 
@@ -69,7 +52,7 @@ export const getCharacterByID = async (
     );
     response
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send({ error: { message: "Internal Server Error", error } });
+      .send({ error: { message: "Internal Server Error" } });
   }
 };
 
@@ -97,7 +80,7 @@ export const addCharacter = async (request: Request, response: Response) => {
     );
     response
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send({ error: { message: "Internal Server Error", error } });
+      .send({ error: { message: "Internal Server Error" } });
   }
 };
 
@@ -128,7 +111,7 @@ export const removeCharacterByID = async (
     );
     response
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send({ error: { message: "Internal Server Error", error } });
+      .send({ error: { message: "Internal Server Error" } });
   }
 };
 
@@ -161,6 +144,6 @@ export const updateCharacterByID = async (
     );
     response
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send({ error: { message: "Internal Server Error", error } });
+      .send({ error: { message: "Internal Server Error" } });
   }
 };
