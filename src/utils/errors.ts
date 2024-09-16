@@ -1,4 +1,5 @@
 export const ERROR = {
+  API_DOCS: "Failet to get API documentation",
   ADD: "Failed to add character",
   DELETE: "Failed to delete character",
   UPDATE: "Failed to update character",

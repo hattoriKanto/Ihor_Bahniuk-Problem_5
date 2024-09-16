@@ -3,6 +3,18 @@ import { StatusCodes } from "http-status-codes";
 import * as services from "../services/characters.services";
 import { createFilters, ERROR, CharacterData } from "../utils";
 
+export const getAPIDocs = async (request: Request, response: Response) => {
+  try {
+    const result = await services.getAPIDocs();
+
+    response.status(StatusCodes.OK).send(result);
+  } catch (error) {
+    response
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send({ error: { message: "Internal Server Error" } });
+  }
+};
+
 export const getAllCharacters = async (
   request: Request,
   response: Response

@@ -3,7 +3,7 @@ import * as controllers from "../controllers/characters.controllers";
 
 export const router = express.Router();
 
-router.get("/");
+router.get("/", controllers.getAPIDocs);
 router.get("/characters", controllers.getAllCharacters);
 router.get("/characters/:id", controllers.getCharacterByID);
 router.post("/characters", controllers.addCharacter);
