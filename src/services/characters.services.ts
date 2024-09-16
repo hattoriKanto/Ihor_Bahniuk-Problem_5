@@ -14,30 +14,40 @@ export const getAllCharacters = async (filters: FiltersData) => {
 
     return result;
   } catch (error) {
-    console.error(`${ERROR.FETCH_MANY}: `, error);
+    console.error(`An error has occurred: `);
+    console.log(error);
     throw new Error(ERROR.FETCH_MANY);
   }
 };
 
-export const getCharacterByID = async (id: number) => {
+export const getCharacterByID = async (id: string) => {
   try {
-    const result = await prisma.character.findUnique({
-      where: {
-        id,
-      },
-    });
+    const normalizedID = Number(id);
 
-    return result;
-  } catch (error) {
-    if (
-      error instanceof PrismaClientKnownRequestError &&
-      error.code === "P2025"
-    ) {
-      console.error(`${ERROR.NOT_FOUND}: `, error);
+    if (isNaN(normalizedID)) {
       throw new Error(ERROR.NOT_FOUND);
     }
 
-    console.error(`${ERROR.FETCH_ONE}: `, error);
+    const result = await prisma.character.findUnique({
+      where: {
+        id: normalizedID,
+      },
+    });
+
+    if (!result) {
+      throw new Error(ERROR.NOT_FOUND);
+    }
+
+    return result;
+  } catch (error) {
+    if (error instanceof Error && error.message === ERROR.NOT_FOUND) {
+      console.error(`An error has occurred: `);
+      console.log(error);
+      throw new Error(ERROR.NOT_FOUND);
+    }
+
+    console.error(`An error has occurred: `);
+    console.log(error);
     throw new Error(ERROR.FETCH_ONE);
   }
 };
@@ -51,44 +61,60 @@ export const addCharacter = async (characterData: CharacterData) => {
     return result;
   } catch (error) {
     if (error instanceof PrismaClientValidationError) {
-      console.error(`${ERROR.INVALID_DATA}: `, error);
+      console.error(`An error has occurred: `);
+      console.log(error);
       throw new Error(ERROR.INVALID_DATA);
     }
 
-    console.error(`${ERROR.ADD}: `, error);
+    console.error(`An error has occurred: `);
+    console.log(error);
     throw new Error(ERROR.ADD);
   }
 };
 
-export const removeCharacterByID = async (id: number) => {
+export const removeCharacterByID = async (id: string) => {
   try {
+    const normalizedID = Number(id);
+
+    if (isNaN(normalizedID)) {
+      throw new Error(ERROR.NOT_FOUND);
+    }
+
     await prisma.character.delete({
       where: {
-        id,
+        id: normalizedID,
       },
     });
   } catch (error) {
     if (
-      error instanceof PrismaClientKnownRequestError &&
-      error.code === "P2025"
+      (error instanceof Error && error.message === ERROR.NOT_FOUND) ||
+      (error instanceof PrismaClientKnownRequestError && error.code === "P2025")
     ) {
-      console.error(`${ERROR.NOT_FOUND}: `, error);
+      console.error(`An error has occurred: `);
+      console.log(error);
       throw new Error(ERROR.NOT_FOUND);
     }
 
-    console.error(`${ERROR.DELETE}: `, error);
+    console.error(`An error has occurred: `);
+    console.log(error);
     throw new Error(ERROR.DELETE);
   }
 };
 
 export const updateCharacterByID = async (
-  id: number,
+  id: string,
   data: Partial<CharacterData>
 ) => {
   try {
+    const normalizedID = Number(id);
+
+    if (isNaN(normalizedID)) {
+      throw new Error(ERROR.NOT_FOUND);
+    }
+
     const result = await prisma.character.update({
       where: {
-        id,
+        id: normalizedID,
       },
       data: {
         ...data,
@@ -98,14 +124,22 @@ export const updateCharacterByID = async (
     return result;
   } catch (error) {
     if (
-      error instanceof PrismaClientKnownRequestError &&
-      error.code === "P2025"
+      (error instanceof Error && error.message === ERROR.NOT_FOUND) ||
+      (error instanceof PrismaClientKnownRequestError && error.code === "P2025")
     ) {
-      console.error(`${ERROR.NOT_FOUND}: `, error);
+      console.error(`An error has occurred: `);
+      console.log(error);
       throw new Error(ERROR.NOT_FOUND);
     }
 
-    console.error(`${ERROR.UPDATE}: `, error);
+    if (error instanceof PrismaClientValidationError) {
+      console.error(`An error has occurred: `);
+      console.log(error);
+      throw new Error(ERROR.INVALID_DATA);
+    }
+
+    console.error(`An error has occurred: `);
+    console.log(error);
     throw new Error(ERROR.UPDATE);
   }
 };

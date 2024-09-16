@@ -15,10 +15,6 @@ export const getAllCharacters = async (
 
     response.status(StatusCodes.OK).send(result);
   } catch (error) {
-    console.error(
-      "An error has occurred while trying to get characters: ",
-      error
-    );
     response
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send({ error: { message: "Internal Server Error" } });
@@ -31,12 +27,7 @@ export const getCharacterByID = async (
 ) => {
   try {
     const { id } = request.params;
-    const normalizedID = Number(id);
-    if (isNaN(normalizedID)) {
-      throw new Error(ERROR.NOT_FOUND);
-    }
-
-    const result = await services.getCharacterByID(normalizedID);
+    const result = await services.getCharacterByID(id);
 
     response.status(StatusCodes.OK).send(result);
   } catch (error) {
@@ -46,10 +37,6 @@ export const getCharacterByID = async (
         .send({ error: { message: ERROR.NOT_FOUND } });
     }
 
-    console.error(
-      "An error has occurred while trying to find character by id: ",
-      error
-    );
     response
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send({ error: { message: "Internal Server Error" } });
@@ -74,10 +61,6 @@ export const addCharacter = async (request: Request, response: Response) => {
       });
     }
 
-    console.error(
-      "An error has occurred while trying to create character: ",
-      error
-    );
     response
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send({ error: { message: "Internal Server Error" } });
@@ -90,12 +73,7 @@ export const removeCharacterByID = async (
 ) => {
   try {
     const { id } = request.params;
-    const normalizedID = Number(id);
-    if (isNaN(normalizedID)) {
-      throw new Error(ERROR.NOT_FOUND);
-    }
-
-    await services.removeCharacterByID(normalizedID);
+    await services.removeCharacterByID(id);
 
     response.status(StatusCodes.NO_CONTENT).send();
   } catch (error) {
@@ -105,10 +83,6 @@ export const removeCharacterByID = async (
         .send({ error: { message: ERROR.NOT_FOUND } });
     }
 
-    console.error(
-      "An error has occurred while trying to delete character by id: ",
-      error
-    );
     response
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send({ error: { message: "Internal Server Error" } });
@@ -122,26 +96,25 @@ export const updateCharacterByID = async (
   try {
     const { id } = request.params;
     const data = request.body as Partial<CharacterData>;
-    const normalizedID = Number(id);
-    if (isNaN(normalizedID)) {
-      throw new Error(ERROR.NOT_FOUND);
-    }
 
-    const result = await services.updateCharacterByID(normalizedID, data);
+    const result = await services.updateCharacterByID(id, data);
 
     response.status(StatusCodes.OK).send(result);
   } catch (error) {
-    console.log(error);
     if (error instanceof Error && error.message === ERROR.NOT_FOUND) {
       return response
         .status(StatusCodes.NOT_FOUND)
         .send({ error: { message: ERROR.NOT_FOUND } });
     }
 
-    console.error(
-      "An error has occurred while trying to update character by id: ",
-      error
-    );
+    if (error instanceof Error && error.message === ERROR.INVALID_DATA) {
+      return response.status(StatusCodes.BAD_REQUEST).send({
+        error: {
+          message: ERROR.INVALID_DATA,
+        },
+      });
+    }
+
     response
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send({ error: { message: "Internal Server Error" } });
